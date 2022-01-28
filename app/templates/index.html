@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div>
+  <div class = "container pt-4">
+    <div class="row  p-0 mt-4">
+      <div class="col-lg-4 mx-auto shadow p-0" >
+        <div class="alert alert-info"><h2>Add YouDo</h1></div>
+          <div class = "p-4">
+              <form method="POST" action="/add-youdo/">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <hr>
+                <input class="btn btn-info" type="submit" value="ADD">
+              </form>
+          </div>
+        </div>
+
+        
+
+          <div class="col">
+            <div class="border">
+
+              {% if youdos|length == 0 %}
+                <div class="p-4">
+                  <br>
+                  </br>
+                  <div class ="alert alert-info text-center">
+                    <p class="" style ="font-size: 30px;"> NO YouDO's</p>
+                  </div>
+                    <br>
+                    </br>
+                </div>
+
+              {% else %}
+              <div>
+                <table class = "table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Title</th>
+                      <th>Status</th>
+                      <th>Priority</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                    <tbody>
+                      
+                      {% for youdo in youdos %}
+                      <tr>
+                      
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ youdo.title }}</td>
+                        <td>
+                          {% if youdo.status == "C" %}
+
+                            ✅
+
+                          {% else %}
+
+                            🕤
+
+                          {% endif %}
+
+                        </td>
+                        <td>{{ youdo.priority }}</td>
+                        <td>
+                          <a href="/delete-youdo/{{ youdo.id }}" title="Delete" class="">🗑️</a>
+                          {% if youdo.status == 'P' %}
+                          <a href="/change-status/{{ youdo.id }}/C" title="Mark Completed" class="">✅</a>
+                          {% else %}
+                          <a href="/change-status/{{ youdo.id }}/P" title="Mark Pending" class="">🕤</a>
+                          {% endif %}
+                        
+                        </td>
+
+                      
+                      
+                      </tr>
+                      {% endfor %}
+                    
+                      
+                    </tbody>
+                </table>
+              </div>
+
+
+              {% endif %}
+              
+
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+{% endblock %}
+  
+
+
+
+
+
+
